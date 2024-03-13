@@ -1,9 +1,8 @@
 #pragma once
 
 MAKE_LOG_CATEGORY(AccountServer);
-class AccountServer
+struct AccountServer final
 {
-public:
 	AccountServer();
 	~AccountServer();
 };

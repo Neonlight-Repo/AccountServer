@@ -193,8 +193,9 @@ python execute.py -s ../../$(ProjectName)/common/ -c "D:/Project/Unreal Project/
   <ItemGroup>
     <ClCompile Include="AccountServer\Database\Procedure.cpp" />
     <ClCompile Include="AccountServer\AccountServer.cpp" />
-    <ClCompile Include="AccountServer\AccountSession.cpp" />
+    <ClCompile Include="AccountServer\Session\AccountSession.cpp" />
     <ClCompile Include="AccountServer\PacketHandler.cpp" />
+    <ClCompile Include="AccountServer\Session\LogSession.cpp" />
     <ClCompile Include="Main\main.cpp" />
     <ClCompile Include="Main\PCH\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -206,12 +207,18 @@ python execute.py -s ../../$(ProjectName)/common/ -c "D:/Project/Unreal Project/
   <ItemGroup>
     <ClInclude Include="AccountServer\Database\Procedure.hpp" />
     <ClInclude Include="AccountServer\AccountServer.hpp" />
-    <ClInclude Include="AccountServer\AccountSession.hpp" />
+    <ClInclude Include="AccountServer\Session\AccountSession.hpp" />
     <ClInclude Include="common\generated\account\Enum.gen.hpp" />
     <ClInclude Include="common\generated\account\Packet.gen.hpp" />
     <ClInclude Include="common\generated\account\Protocol.gen.hpp" />
     <ClInclude Include="common\generated\account\ServerPacketHandler.gen.hpp" />
     <ClInclude Include="common\generated\account\Struct.gen.hpp" />
+    <ClInclude Include="common\generated\log\ClientPacketHandler.gen.hpp" />
+    <ClInclude Include="common\generated\log\Enum.gen.hpp" />
+    <ClInclude Include="common\generated\log\Packet.gen.hpp" />
+    <ClInclude Include="common\generated\log\Protocol.gen.hpp" />
+    <ClInclude Include="common\generated\log\Struct.gen.hpp" />
+    <ClInclude Include="AccountServer\Session\LogSession.hpp" />
     <ClInclude Include="Main\PCH\pch.h" />
   </ItemGroup>
   <ItemGroup>

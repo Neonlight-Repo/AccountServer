@@ -1,21 +1,28 @@
 #include "pch.h"
-#include "AccountSession.hpp"
+
+#include "Session/AccountSession.hpp"
+#include "Session/LogSession.hpp"
+
 #include "Network/Server.hpp"
-#include "AccountServer.hpp"
+#include "Network/Client.hpp"
 
 using namespace std;
 
 int main()
 {
-	auto ep = Endpoint(net::IpAddress::Loopback, 1207);
+	auto serverEndpoint = Endpoint(net::IpAddress::Loopback, 1207);
+	auto logServerEndpoint = Endpoint(net::IpAddress::Loopback, 1225);
 	try {
 		auto server = Server::Open<AccountSession>();
-		server->Run(ep);
+		auto client = Client::Open<LogSession>();
+		server->Run(serverEndpoint);
+		client->Run(logServerEndpoint);
 
-		Console::Log(LogAccountServer, Log, L"Account server is running on " + action::ToUnicodeString(ep.toString()));
+		Console::Log(LogAccountServer, Log, L"Account Server is running on " + action::ToUnicodeString(serverEndpoint.toString()));
 
-		GEngine->ExecuteIocpLogic(std::thread::hardware_concurrency(), true);
+		GEngine->ExecuteIocpLogic(thread::hardware_concurrency(), true);
 	}
 	catch (exception& e) {
+		Console::Log(LogAccountServer, Error, action::ToUnicodeString(e.what()));
 	}
 }

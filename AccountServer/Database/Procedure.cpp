@@ -3,6 +3,7 @@
 #include "Database/DBConnectionPool.hpp"
 #include "Database/Statement.hpp"
 #include "Network/Session.hpp"
+#include "Session/LogSession.hpp"
 
 std::shared_ptr<Procedure> GProcedure = std::make_shared<Procedure>();
 
@@ -18,6 +19,9 @@ void Procedure::HandleLogin(std::shared_ptr<Session> session, gen::account::Logi
 		{
 			res.uuid = uuid.value();
 			res.success = true;
+
+			auto logSession = LogSession::Get();
+			//ASSERT_CRASH(logSession);
 		}
 	}
 	session->Send(&res);

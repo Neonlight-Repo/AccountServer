@@ -4,6 +4,7 @@
 
 void AccountSession::onConnected()
 {
+	Console::Log(LogAccountServer, Debug, TEXT("Connected"));
 }
 
 void AccountSession::onDisconnected()

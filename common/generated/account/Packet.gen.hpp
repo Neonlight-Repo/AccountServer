@@ -2,7 +2,8 @@
 
 template<class T> inline T& unmove(T&& t) { return static_cast<T&>(t); }
 
-namespace gen {namespace account {
+namespace gen {
+namespace account {
     enum PacketId : uint16 {
         NONE = 0,
 		LOGIN_REQ = 1,
