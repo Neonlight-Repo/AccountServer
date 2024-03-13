@@ -1,0 +1,37 @@
+{
+	"include": [
+		"Enum.json"
+	],
+	"struct": [
+		{
+			"name": "Room",
+			"data": [
+				{
+					"type": "uint32",
+					"name": "id"
+				},
+				{
+					"type": "string",
+					"name": "name"
+				},
+				{
+					"type": "uint8",
+					"name": "userCount"
+				}
+			]
+		},
+		{
+			"name": "PlayerInfo",
+			"data": [
+				{
+					"type": "uint32",
+					"name": "id"
+				},
+				{
+					"type": "string",
+					"name": "name"
+				}
+			]
+		}
+	]
+}

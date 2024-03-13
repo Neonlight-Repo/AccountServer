@@ -1,0 +1,12 @@
+{
+	"enum": [
+		{
+			"name": "ERoomEvent",
+			"list": [
+				"CREATE",
+				"ENTER",
+				"LEAVE"
+			]
+		}
+	]
+}

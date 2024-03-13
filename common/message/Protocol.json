@@ -1,0 +1,59 @@
+{
+	"include": [
+		"Struct.json"
+	],
+	"message": {
+		"client": [
+			{
+				"name": "LoginReq",
+				"data": [
+					{
+						"type": "string",
+						"name": "nickname"
+					},
+					{
+						"type": "string",
+						"name": "password"
+					}
+				]
+			},
+			{
+				"name": "RegisterReq",
+				"data": [
+					{
+						"type": "string",
+						"name": "nickname"
+					},
+					{
+						"type": "string",
+						"name": "password"
+					}
+				]
+			}
+		],
+		"server": [
+			{
+				"name": "LoginRes",
+				"data": [
+					{
+						"type": "string",
+						"name": "uuid"
+					},
+					{
+						"type": "bool",
+						"name": "success"
+					}
+				]
+			},
+			{
+				"name": "RegisterRes",
+				"data": [
+					{
+						"type": "bool",
+						"name": "success"
+					}
+				]
+			}
+		]
+	}
+}
