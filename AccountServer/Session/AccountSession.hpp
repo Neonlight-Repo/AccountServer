@@ -5,9 +5,9 @@
 class AccountSession : public Session
 {
 public:
-    virtual void onConnected();
-    virtual void onDisconnected();
-    virtual void onReceive(std::span<char>, int);
-    virtual void onFail(Failure);
+    virtual void OnConnected(net::Endpoint);
+    virtual void OnDisconnected(net::Endpoint);
+    virtual void OnReceive(std::span<char>, int);
+    virtual void OnFail(Failure);
 };
 

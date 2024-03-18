@@ -87,7 +87,7 @@ bool Procedure::Register(String nickname, String pwdhash)
 	if (conn)
 	{
 		auto stmt = conn->CreateStatement<3, 0>(TEXT("CALL SP_Register(?, ?, ?)"));
-		stmt.SetParameter(0, action::generate_uuid_v4().c_str());
+		stmt.SetParameter(0, action::UUIDv4().c_str());
 		stmt.SetParameter(1, nickname.c_str());
 		stmt.SetParameter(2, pwdhash.c_str());
 

@@ -2,20 +2,19 @@
 #include "AccountSession.hpp"
 #include "generated/account/ServerPacketHandler.gen.hpp"
 
-void AccountSession::onConnected()
-{
-	Console::Log(LogAccountServer, Debug, TEXT("Connected"));
-}
-
-void AccountSession::onDisconnected()
+void AccountSession::OnConnected(net::Endpoint)
 {
 }
 
-void AccountSession::onReceive(std::span<char> buffer, int len)
+void AccountSession::OnDisconnected(net::Endpoint)
+{
+}
+
+void AccountSession::OnReceive(std::span<char> buffer, int len)
 {
 	gen::account::PacketHandler::handlePacket(shared_from_this(), buffer);
 }
 
-void AccountSession::onFail(Failure cause)
+void AccountSession::OnFail(Failure cause)
 {
 }
