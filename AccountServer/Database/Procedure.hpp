@@ -14,7 +14,7 @@ public:
 public:	
 	void HandleLogin(std::shared_ptr<Session> session, gen::account::LoginReq request);
 	void HandleRegister(std::shared_ptr<Session> session, gen::account::RegisterReq request);
-private:
+public:
 	bool CheckUser(String nickname);
 	std::optional<String> Login(String nickname, String pwdhash);
 	bool Register(String nickname, String pwdhash);

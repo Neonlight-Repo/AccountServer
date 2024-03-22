@@ -11,6 +11,7 @@ std::shared_ptr<LogSession> LogSession::Get()
 
 void LogSession::OnConnected(net::Endpoint endpoint)
 {
+	m_endpoint = endpoint;
 	s_instance = std::static_pointer_cast<LogSession>(shared_from_this());
 
 	gen::logs::SystemLog sysLog;
@@ -29,4 +30,9 @@ void LogSession::OnReceive(std::span<char>, int)
 
 void LogSession::OnFail(Failure)
 {
+}
+
+net::Endpoint LogSession::GetEndpoint() const
+{
+	return m_endpoint;
 }

@@ -10,10 +10,10 @@ AccountServer::AccountServer()
 	GEngine->GetDBConnectionPool()->Connect(10, TEXT(
 		"DRIVER={MySQL ODBC 8.3 Unicode Driver};"
 		"SERVER=localhost;"
-		"PORT=3307;"
-		"DATABASE=HazardDB;"
-		"USER=root;"
-		"PASSWORD=1234;"
+		"PORT=3306;"
+		"DATABASE=AccountDB;"
+		"USER=AccountAdmin;"
+		"PASSWORD=qwE!r6800@;"
 		"OPTION=3;"
 	));
 }

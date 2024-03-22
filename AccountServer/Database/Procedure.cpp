@@ -5,6 +5,8 @@
 #include "Network/Session.hpp"
 #include "Session/LogSession.hpp"
 
+#include "generated/logs/Protocol.gen.hpp"
+
 std::shared_ptr<Procedure> GProcedure = std::make_shared<Procedure>();
 
 void Procedure::HandleLogin(std::shared_ptr<Session> session, gen::account::LoginReq request)
@@ -20,8 +22,12 @@ void Procedure::HandleLogin(std::shared_ptr<Session> session, gen::account::Logi
 			res.uuid = uuid.value();
 			res.success = true;
 
+			gen::logs::SystemLog log;
+			log.serverName = TEXT("AccountServer");
+
 			auto logSession = LogSession::Get();
-			//ASSERT_CRASH(logSession);
+			//log.category = gen::logs::ESystemLog::;
+			logSession->Send(&log);
 		}
 	}
 	session->Send(&res);
@@ -64,16 +70,19 @@ std::optional<String> Procedure::Login(String nickname, String pwdhash)
 	auto conn = GEngine->GetDBConnectionPool()->Pop();
 	if (conn)
 	{
-		WCHAR uuid[37] = L"";
+		WCHAR uuid[36] = L"";
 		auto stmt = conn->CreateStatement<2, 1>(TEXT("CALL SP_Login(?, ?)"));
 		stmt.SetParameter(0, nickname.c_str());
 		stmt.SetParameter(1, pwdhash.c_str());
+		//stmt.SetParameter(2, action::ToUnicodeString(LogSession::Get()->GetEndpoint().getAddress().toString()).c_str());
 		stmt.Bind(0, uuid);
 
 		bool res = stmt.ExecuteQuery();
 		res &= stmt.Next();
 
 		GEngine->GetDBConnectionPool()->Push(conn);	
+
+		Console::Log(LogAccountServer, Debug, TEXT("User logined."));
 
 		if (res) return uuid;
 		else return std::nullopt;
@@ -86,13 +95,12 @@ bool Procedure::Register(String nickname, String pwdhash)
 	auto conn = GEngine->GetDBConnectionPool()->Pop();
 	if (conn)
 	{
-		auto stmt = conn->CreateStatement<3, 0>(TEXT("CALL SP_Register(?, ?, ?)"));
-		stmt.SetParameter(0, action::UUIDv4().c_str());
-		stmt.SetParameter(1, nickname.c_str());
-		stmt.SetParameter(2, pwdhash.c_str());
+		auto stmt = conn->CreateStatement<2, 0>(std::format(TEXT("CALL SP_Register('{}', ?, ?)"), action::UUIDv4()));
+		stmt.SetParameter(0, nickname.c_str());
+		stmt.SetParameter(1, pwdhash.c_str());
+		//stmt.SetParameter(3, action::ToUnicodeString(LogSession::Get()->GetEndpoint().getAddress().toString()).c_str());
 
 		bool res = stmt.ExecuteQuery();
-		res &= stmt.Next();
 
 		GEngine->GetDBConnectionPool()->Push(conn);
 

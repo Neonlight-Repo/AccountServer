@@ -162,7 +162,8 @@ python execute.py -s ../../$(ProjectName)/common/ -c "['D:/Project/Unreal Projec
     </Link>
     <PreBuildEvent>
       <Command>cd ../tools/PacketGenerator
-python execute.py -s ../../$(ProjectName)/common/ -c "['D:/Project/Unreal Project/MoralHazard/Source/MoralHazard/Network/']" -n account
+python execute.py -s ../../$(ProjectName)/common/ -c "['../../../WOS-Client/Source/WOS/Network/']" -n account
+
 
 
 </Command>
@@ -230,6 +231,7 @@ python execute.py -s ../../$(ProjectName)/common/ -c "['D:/Project/Unreal Projec
     <ClInclude Include="Main\PCH\pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="common\database\Setup.sql" />
     <None Include="common\database\ProcedureScheme.sql" />
     <None Include="common\database\TableScheme.sql" />
     <None Include="common\message\Enum.json" />

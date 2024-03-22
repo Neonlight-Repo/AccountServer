@@ -1,6 +1,7 @@
+USE AccountDB;
+
 -- User account table
-DROP TABLE UserAccount;
-CREATE TABLE UserAccount (
+CREATE TABLE IF NOT EXISTS UserAccount (
 	uniqueId BINARY(16) NOT NULL,
 	nickname VARCHAR(32) NOT NULL,
 	pwdhash VARCHAR(32) NOT NULL,
