@@ -2,6 +2,7 @@
 
 #include <Thread/JobSerializer.hpp>
 #include <generated/account/Protocol.gen.hpp>
+#include <generated/logs/Protocol.gen.hpp>
 
 class Procedure : public JobSerializer
 {
@@ -13,9 +14,13 @@ public:
 	}
 public:	
 	void HandleLogin(std::shared_ptr<Session> session, gen::account::LoginReq request);
+	void HandleLogout(std::shared_ptr<Session> session, gen::account::LogoutReq request);
 	void HandleRegister(std::shared_ptr<Session> session, gen::account::RegisterReq request);
 public:
 	bool CheckUser(String nickname);
 	std::optional<String> Login(String nickname, String pwdhash);
-	bool Register(String nickname, String pwdhash);
+	bool Register(String nickname, String pwdhash, String& uuid);
+	bool Logout(String uuid);
+	void SendLog(String uid, std::shared_ptr<class AccountSession> session, gen::logs::ELoginType type);
+	HashMap<String, bool> m_loginUserCheck;
 };

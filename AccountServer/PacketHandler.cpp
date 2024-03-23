@@ -10,6 +10,12 @@ bool account::PacketHandler::LoginReqPacketHandler(std::shared_ptr<Session> sess
 	return false;
 }
 
+bool account::PacketHandler::LogoutReqPacketHandler(TSharedPtr<Session> session, TSharedPtr<LogoutReq> packet)
+{
+	Procedure::Get()->Launch(&Procedure::HandleLogout, session, *packet);
+	return false;
+}
+
 bool account::PacketHandler::RegisterReqPacketHandler(TSharedPtr<Session> session, TSharedPtr<RegisterReq> packet)
 {
 	Procedure::Get()->Launch(&Procedure::HandleRegister, session, *packet);

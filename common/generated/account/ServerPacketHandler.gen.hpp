@@ -45,6 +45,8 @@ namespace account
                 break;
 			case LOGIN_REQ:
 				return BIND_HANDLER(LoginReq, buffer);
+			case LOGOUT_REQ:
+				return BIND_HANDLER(LogoutReq, buffer);
 			case REGISTER_REQ:
 				return BIND_HANDLER(RegisterReq, buffer);
             default:
@@ -60,6 +62,7 @@ namespace account
             return handler(session);
         }
 		static bool LoginReqPacketHandler(TSharedPtr<Session> session, TSharedPtr<LoginReq> packet);
+		static bool LogoutReqPacketHandler(TSharedPtr<Session> session, TSharedPtr<LogoutReq> packet);
 		static bool RegisterReqPacketHandler(TSharedPtr<Session> session, TSharedPtr<RegisterReq> packet);
 	};
 }

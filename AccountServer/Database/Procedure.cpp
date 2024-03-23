@@ -1,11 +1,13 @@
 #include "pch.h"
 #include "Procedure.hpp"
+
 #include "Database/DBConnectionPool.hpp"
 #include "Database/Statement.hpp"
-#include "Network/Session.hpp"
+
+#include "Session/AccountSession.hpp"
 #include "Session/LogSession.hpp"
 
-#include "generated/logs/Protocol.gen.hpp"
+#include "generated/logs/Enum.gen.hpp"
 
 std::shared_ptr<Procedure> GProcedure = std::make_shared<Procedure>();
 
@@ -14,23 +16,35 @@ void Procedure::HandleLogin(std::shared_ptr<Session> session, gen::account::Logi
 	gen::account::LoginRes res;
 	res.success = false;
 	res.uuid = TEXT("");
-	if (CheckUser(request.nickname))
+	if (CheckUser(request.nickname) && !m_loginUserCheck[request.nickname])
 	{
 		auto uuid = Login(request.nickname, request.password);
 		if (uuid.has_value())
 		{
-			res.uuid = uuid.value();
-			res.success = true;
+			if (!m_loginUserCheck[uuid.value()])
+			{
+				res.uuid = uuid.value();
+				res.success = true;
 
-			gen::logs::SystemLog log;
-			log.serverName = TEXT("AccountServer");
-
-			auto logSession = LogSession::Get();
-			//log.category = gen::logs::ESystemLog::;
-			logSession->Send(&log);
+				m_loginUserCheck[uuid.value()] = true;
+				SendLog(uuid.value(), std::static_pointer_cast<AccountSession>(session), gen::logs::LOGIN);
+			}
+			else
+			{
+				res.cause = gen::account::ELoginFail::EXIST;
+			}
 		}
 	}
+	else
+	{
+		res.cause = gen::account::ELoginFail::INVALID;
+	}
 	session->Send(&res);
+}
+
+void Procedure::HandleLogout(std::shared_ptr<Session> session, gen::account::LogoutReq request)
+{
+	Logout(request.uuid);
 }
 
 void Procedure::HandleRegister(std::shared_ptr<Session> session, gen::account::RegisterReq request)
@@ -39,7 +53,13 @@ void Procedure::HandleRegister(std::shared_ptr<Session> session, gen::account::R
 	res.success = false;
 	if (!CheckUser(request.nickname))
 	{
-		res.success = Register(request.nickname, request.password);
+		String uuid;
+		res.success = Register(request.nickname, request.password, uuid);
+		if (res.success)
+		{
+			SendLog(uuid, std::static_pointer_cast<AccountSession>(session), gen::logs::REGISTER);
+			m_loginUserCheck[uuid] = true;
+		}
 	}
 	session->Send(&res);
 }
@@ -74,7 +94,6 @@ std::optional<String> Procedure::Login(String nickname, String pwdhash)
 		auto stmt = conn->CreateStatement<2, 1>(TEXT("CALL SP_Login(?, ?)"));
 		stmt.SetParameter(0, nickname.c_str());
 		stmt.SetParameter(1, pwdhash.c_str());
-		//stmt.SetParameter(2, action::ToUnicodeString(LogSession::Get()->GetEndpoint().getAddress().toString()).c_str());
 		stmt.Bind(0, uuid);
 
 		bool res = stmt.ExecuteQuery();
@@ -90,15 +109,15 @@ std::optional<String> Procedure::Login(String nickname, String pwdhash)
 	return std::nullopt;
 }
 
-bool Procedure::Register(String nickname, String pwdhash)
+bool Procedure::Register(String nickname, String pwdhash, String& uuid)
 {
 	auto conn = GEngine->GetDBConnectionPool()->Pop();
 	if (conn)
 	{
-		auto stmt = conn->CreateStatement<2, 0>(std::format(TEXT("CALL SP_Register('{}', ?, ?)"), action::UUIDv4()));
+		uuid = action::UUIDv4();
+		auto stmt = conn->CreateStatement<2, 0>(std::format(TEXT("CALL SP_Register('{}', ?, ?)"), uuid));
 		stmt.SetParameter(0, nickname.c_str());
 		stmt.SetParameter(1, pwdhash.c_str());
-		//stmt.SetParameter(3, action::ToUnicodeString(LogSession::Get()->GetEndpoint().getAddress().toString()).c_str());
 
 		bool res = stmt.ExecuteQuery();
 
@@ -107,4 +126,25 @@ bool Procedure::Register(String nickname, String pwdhash)
 		return res;
 	}
 	return false;
+}
+
+bool Procedure::Logout(String uuid)
+{
+	if (m_loginUserCheck[uuid]) {
+		m_loginUserCheck[uuid] = false;
+		return true;
+	}
+	return false;
+}
+
+void Procedure::SendLog(String uid, std::shared_ptr<AccountSession> session, gen::logs::ELoginType type)
+{
+	auto accountSession = std::static_pointer_cast<AccountSession>(session);
+	auto logSession = LogSession::Get();
+
+	gen::logs::SecurityLog secuLog;
+	secuLog.uid = uid;
+	secuLog.ipAddress = action::ToUnicodeString(accountSession->GetEndpoint().getAddress().toString());
+	secuLog.loginType = type;
+	logSession->Send(&secuLog);
 }

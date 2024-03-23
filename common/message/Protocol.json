@@ -18,6 +18,15 @@
 				]
 			},
 			{
+				"name": "LogoutReq",
+				"data": [
+					{
+						"type": "string",
+						"name": "uuid"
+					}
+				]
+			},
+			{
 				"name": "RegisterReq",
 				"data": [
 					{
@@ -38,6 +47,10 @@
 					{
 						"type": "string",
 						"name": "uuid"
+					},
+					{
+						"type": "ELoginFail",
+						"name": "cause"
 					},
 					{
 						"type": "bool",

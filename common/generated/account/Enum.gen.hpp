@@ -13,14 +13,15 @@
 
 #include <vector>
 
+#undef ERROR
+
 /* Additional headers. */
 
 namespace gen {
 namespace account {
-    enum ERoomEvent : uint16 {
-        CREATE,
-		ENTER,
-		LEAVE
+    enum ELoginFail : uint16 {
+        EXIST,
+		INVALID
     };
 }
 }

@@ -13,6 +13,8 @@
 
 #include <vector>
 
+#undef ERROR
+
 /* Additional headers. */
 #include "Enum.gen.hpp"
 namespace gen {

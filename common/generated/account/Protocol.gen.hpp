@@ -13,6 +13,8 @@
 
 #include <vector>
 
+#undef ERROR
+
 /* Additional headers. */
 #include "Struct.gen.hpp"
 namespace gen {
@@ -49,6 +51,40 @@ namespace account {
 
     inline Packet& operator<<(Packet& pk, const LoginReq& loginReq) {
         pk << loginReq.nickname << loginReq.password;
+        return pk;
+    }
+
+	class LogoutReq
+            : public Packet {
+    public:
+        LogoutReq() : Packet(static_cast<unsigned short>(PacketId::LOGOUT_REQ)) {
+        }
+        ~LogoutReq() {
+    
+        }
+    protected:
+        virtual void Read() override
+        {
+            Packet::Read();
+            *this >> uuid;
+        }
+        virtual void Write() override
+        {
+            *this << uuid;
+            Finish();
+        }
+    public:
+        String uuid;
+	
+    };
+    
+    inline Packet& operator>>(Packet& pk, LogoutReq& logoutReq) {
+        pk >> logoutReq.uuid;
+        return pk;
+    }
+
+    inline Packet& operator<<(Packet& pk, const LogoutReq& logoutReq) {
+        pk << logoutReq.uuid;
         return pk;
     }
 
@@ -99,26 +135,27 @@ namespace account {
         virtual void Read() override
         {
             Packet::Read();
-            *this >> uuid >> success;
+            *this >> uuid >> reinterpret_cast<uint16&>(cause) >> success;
         }
         virtual void Write() override
         {
-            *this << uuid << success;
+            *this << uuid << (cause) << success;
             Finish();
         }
     public:
         String uuid;
+		ELoginFail cause;
 		bool success;
 	
     };
     
     inline Packet& operator>>(Packet& pk, LoginRes& loginRes) {
-        pk >> loginRes.uuid >> loginRes.success;
+        pk >> loginRes.uuid >> reinterpret_cast<uint16&>(loginRes.cause) >> loginRes.success;
         return pk;
     }
 
     inline Packet& operator<<(Packet& pk, const LoginRes& loginRes) {
-        pk << loginRes.uuid << loginRes.success;
+        pk << loginRes.uuid << (loginRes.cause) << loginRes.success;
         return pk;
     }
 

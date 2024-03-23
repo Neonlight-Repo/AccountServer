@@ -1,11 +1,10 @@
 {
 	"enum": [
 		{
-			"name": "ERoomEvent",
+			"name": "ELoginFail",
 			"list": [
-				"CREATE",
-				"ENTER",
-				"LEAVE"
+				"EXIST",
+				"INVALID"
 			]
 		}
 	]

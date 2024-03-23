@@ -15,8 +15,9 @@ void LogSession::OnConnected(net::Endpoint endpoint)
 	s_instance = std::static_pointer_cast<LogSession>(shared_from_this());
 
 	gen::logs::SystemLog sysLog;
-	sysLog.category = gen::logs::START;
+	sysLog.severity = gen::logs::INFO;
 	sysLog.serverName = TEXT("Account Server");
+	sysLog.message = TEXT("Server started");
 	Send(&sysLog);
 }
 
