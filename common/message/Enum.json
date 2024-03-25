@@ -3,6 +3,7 @@
 		{
 			"name": "ELoginFail",
 			"list": [
+				"SUCCESS",
 				"EXIST",
 				"INVALID"
 			]

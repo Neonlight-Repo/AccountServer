@@ -20,7 +20,8 @@
 namespace gen {
 namespace account {
     enum ELoginFail : uint16 {
-        EXIST,
+        SUCCESS,
+		EXIST,
 		INVALID
     };
 }

@@ -16,6 +16,7 @@ void Procedure::HandleLogin(std::shared_ptr<Session> session, gen::account::Logi
 	gen::account::LoginRes res;
 	res.success = false;
 	res.uuid = TEXT("");
+	res.cause = gen::account::ELoginFail::INVALID;
 	if (CheckUser(request.nickname) && !m_loginUserCheck[request.nickname])
 	{
 		auto uuid = Login(request.nickname, request.password);
@@ -25,6 +26,9 @@ void Procedure::HandleLogin(std::shared_ptr<Session> session, gen::account::Logi
 			{
 				res.uuid = uuid.value();
 				res.success = true;
+				res.cause = gen::account::ELoginFail::SUCCESS;
+
+				Console::Log(LogAccountServer, Debug, TEXT("User logined."));
 
 				m_loginUserCheck[uuid.value()] = true;
 				SendLog(uuid.value(), std::static_pointer_cast<AccountSession>(session), gen::logs::LOGIN);
@@ -34,10 +38,6 @@ void Procedure::HandleLogin(std::shared_ptr<Session> session, gen::account::Logi
 				res.cause = gen::account::ELoginFail::EXIST;
 			}
 		}
-	}
-	else
-	{
-		res.cause = gen::account::ELoginFail::INVALID;
 	}
 	session->Send(&res);
 }
@@ -56,10 +56,7 @@ void Procedure::HandleRegister(std::shared_ptr<Session> session, gen::account::R
 		String uuid;
 		res.success = Register(request.nickname, request.password, uuid);
 		if (res.success)
-		{
 			SendLog(uuid, std::static_pointer_cast<AccountSession>(session), gen::logs::REGISTER);
-			m_loginUserCheck[uuid] = true;
-		}
 	}
 	session->Send(&res);
 }
@@ -100,8 +97,6 @@ std::optional<String> Procedure::Login(String nickname, String pwdhash)
 		res &= stmt.Next();
 
 		GEngine->GetDBConnectionPool()->Push(conn);	
-
-		Console::Log(LogAccountServer, Debug, TEXT("User logined."));
 
 		if (res) return uuid;
 		else return std::nullopt;

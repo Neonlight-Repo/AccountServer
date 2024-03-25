@@ -5,10 +5,12 @@
 void AccountSession::OnConnected(net::Endpoint endpoint)
 {
 	m_endpoint = endpoint;
+	Console::Log(LogAccountServer, Log, std::format(TEXT("Connected {}"), action::ToUnicodeString(endpoint.toString())));
 }
 
-void AccountSession::OnDisconnected(net::Endpoint)
+void AccountSession::OnDisconnected(net::Endpoint endpoint)
 {
+	Console::Log(LogAccountServer, Log, std::format(TEXT("Disconnected {}"), action::ToUnicodeString(endpoint.toString())));
 }
 
 void AccountSession::OnReceive(std::span<char> buffer, int)
