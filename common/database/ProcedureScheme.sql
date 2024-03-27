@@ -22,8 +22,6 @@ BEGIN
 	SELECT @uniqueId := BIN_TO_UUID(uniqueId)
 	FROM AccountDB.UserAccount AS account
 	WHERE account.nickname = nickname AND account.pwdhash = pwdhash;
-
-	-- CALL LogDB.SP_LogLogin(@uniqueId, ipAddress);
 END $$
 
 -- Register
@@ -36,8 +34,6 @@ CREATE PROCEDURE SP_Register(
 BEGIN
 	INSERT INTO AccountDB.UserAccount
 	VALUES(UUID_TO_BIN(uniqueId), nickname, pwdhash);
-
-	-- CALL LogDB.SP_LogRegister(uniqueId, ipAddress);
 END $$
 
 DROP PROCEDURE IF EXISTS SP_Logout;

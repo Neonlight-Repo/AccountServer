@@ -23,6 +23,7 @@ void LogSession::OnConnected(net::Endpoint endpoint)
 
 void LogSession::OnDisconnected(net::Endpoint)
 {
+	
 }
 
 void LogSession::OnReceive(std::span<char>, int)

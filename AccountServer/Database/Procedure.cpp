@@ -87,7 +87,7 @@ std::optional<String> Procedure::Login(String nickname, String pwdhash)
 	auto conn = GEngine->GetDBConnectionPool()->Pop();
 	if (conn)
 	{
-		WCHAR uuid[36] = L"";
+		WCHAR uuid[37] = L"";
 		auto stmt = conn->CreateStatement<2, 1>(TEXT("CALL SP_Login(?, ?)"));
 		stmt.SetParameter(0, nickname.c_str());
 		stmt.SetParameter(1, pwdhash.c_str());
