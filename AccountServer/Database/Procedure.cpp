@@ -28,7 +28,7 @@ void Procedure::HandleLogin(std::shared_ptr<Session> session, gen::account::Logi
 				res.success = true;
 				res.cause = gen::account::ELoginFail::SUCCESS;
 
-				Console::Log(LogAccountServer, Debug, TEXT("User logined."));
+				Console::Log(Category::AccountServer, Debug, TEXT("User logined."));
 
 				m_loginUserCheck[uuid.value()] = true;
 				SendLog(uuid.value(), std::static_pointer_cast<AccountSession>(session), gen::logs::LOGIN);

@@ -18,11 +18,11 @@ int main()
 		server->Run(serverEndpoint);
 		client->Run(logServerEndpoint);
 
-		Console::Log(LogAccountServer, Log, L"Account Server is running on " + action::ToUnicodeString(serverEndpoint.toString()));
+		Console::Log(Category::AccountServer, Info, L"Account Server is running on " + action::ToUnicodeString(serverEndpoint.toString()));
 
 		GEngine->ExecuteIocpLogic(thread::hardware_concurrency(), true);
 	}
 	catch (exception& e) {
-		Console::Log(LogAccountServer, Error, action::ToUnicodeString(e.what()));
+		Console::Log(Category::AccountServer, Error, action::ToUnicodeString(e.what()));
 	}
 }
