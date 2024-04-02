@@ -13,6 +13,7 @@ std::shared_ptr<Procedure> GProcedure = std::make_shared<Procedure>();
 
 void Procedure::HandleLogin(std::shared_ptr<Session> session, gen::account::LoginReq request)
 {
+	auto accountSession = std::static_pointer_cast<AccountSession>(session);
 	gen::account::LoginRes res;
 	res.success = false;
 	res.uuid = TEXT("");
@@ -29,9 +30,10 @@ void Procedure::HandleLogin(std::shared_ptr<Session> session, gen::account::Logi
 				res.cause = gen::account::ELoginFail::SUCCESS;
 
 				Console::Log(Category::AccountServer, Debug, TEXT("User logined."));
+				accountSession->uuid = uuid.value();
 
 				m_loginUserCheck[uuid.value()] = true;
-				SendLog(uuid.value(), std::static_pointer_cast<AccountSession>(session), gen::logs::LOGIN);
+				SendLog(uuid.value(), accountSession, gen::logs::LOGIN);
 			}
 			else
 			{
@@ -126,6 +128,7 @@ bool Procedure::Register(String nickname, String pwdhash, String& uuid)
 bool Procedure::Logout(String uuid)
 {
 	if (m_loginUserCheck[uuid]) {
+		Console::Log(Category::AccountServer, Debug, TEXT("Logout"));
 		m_loginUserCheck[uuid] = false;
 		return true;
 	}
