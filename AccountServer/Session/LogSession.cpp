@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "LogSession.hpp"
+#include "Thread/ThreadManager.hpp"
+
 #include "generated/logs/Protocol.gen.hpp"
 
 std::shared_ptr<LogSession> LogSession::s_instance = nullptr;
@@ -23,7 +25,7 @@ void LogSession::OnConnected(net::Endpoint endpoint)
 
 void LogSession::OnDisconnected(net::Endpoint)
 {
-	
+	GEngine->GetThreadManager()->Terminate();
 }
 
 void LogSession::OnReceive(std::span<char>, int)
@@ -32,6 +34,7 @@ void LogSession::OnReceive(std::span<char>, int)
 
 void LogSession::OnFail(Failure)
 {
+	ASSERT_CRASH(false);
 }
 
 net::Endpoint LogSession::GetEndpoint() const
