@@ -218,16 +218,6 @@ python execute.py -s ../../$(ProjectName)/common/ -c "['D:/Project/Unreal Projec
     <ClInclude Include="AccountServer\AccountServer.hpp" />
     <ClInclude Include="AccountServer\Session\AccountSession.hpp" />
     <ClInclude Include="AccountServer\Session\LogSession.hpp" />
-    <ClInclude Include="common\generated\account\Enum.gen.hpp" />
-    <ClInclude Include="common\generated\account\Packet.gen.hpp" />
-    <ClInclude Include="common\generated\account\Protocol.gen.hpp" />
-    <ClInclude Include="common\generated\account\ServerPacketHandler.gen.hpp" />
-    <ClInclude Include="common\generated\account\Struct.gen.hpp" />
-    <ClInclude Include="common\generated\logs\ClientPacketHandler.gen.hpp" />
-    <ClInclude Include="common\generated\logs\Enum.gen.hpp" />
-    <ClInclude Include="common\generated\logs\Packet.gen.hpp" />
-    <ClInclude Include="common\generated\logs\Protocol.gen.hpp" />
-    <ClInclude Include="common\generated\logs\Struct.gen.hpp" />
     <ClInclude Include="Main\PCH\pch.h" />
   </ItemGroup>
   <ItemGroup>
