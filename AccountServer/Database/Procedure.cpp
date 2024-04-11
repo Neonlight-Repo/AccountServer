@@ -46,7 +46,8 @@ void Procedure::HandleLogin(std::shared_ptr<Session> session, gen::account::Logi
 
 void Procedure::HandleLogout(std::shared_ptr<Session> session, gen::account::LogoutReq request)
 {
-	Logout(request.uuid);
+	auto accountSession = std::static_pointer_cast<AccountSession>(session);
+	Logout(session, request.uuid);
 }
 
 void Procedure::HandleRegister(std::shared_ptr<Session> session, gen::account::RegisterReq request)
@@ -125,11 +126,14 @@ bool Procedure::Register(String nickname, String pwdhash, String& uuid)
 	return false;
 }
 
-bool Procedure::Logout(String uuid)
+bool Procedure::Logout(std::shared_ptr<Session> session, String uuid)
 {
+	auto accountSession = std::static_pointer_cast<AccountSession>(session);
 	if (m_loginUserCheck[uuid]) {
-		Console::Log(Category::AccountServer, Debug, TEXT("Logout"));
+		Console::Log(Category::AccountServer, Debug, TEXT("user logout"));
 		m_loginUserCheck[uuid] = false;
+
+		SendLog(accountSession->uuid.value(), accountSession, gen::logs::LOGOUT);
 		return true;
 	}
 	return false;

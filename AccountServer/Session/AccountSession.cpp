@@ -21,7 +21,7 @@ void AccountSession::OnDisconnected(net::Endpoint endpoint)
 {
 	Console::Log(Category::AccountServer, Info, TEXT("Disconnected " + action::ToUnicodeString(endpoint.toString())));
 	if (uuid.has_value())
-		Procedure::Get()->Logout(uuid.value());
+		Procedure::Get()->Logout(shared_from_this(), uuid.value());
 }
 
 void AccountSession::OnReceive(std::span<char> buffer, int)

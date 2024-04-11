@@ -162,7 +162,7 @@ python execute.py -s ../../$(ProjectName)/common/ -c "['D:/Project/Unreal Projec
     </Link>
     <PreBuildEvent>
       <Command>cd ../tools/PacketGenerator
-python execute.py -s ../../$(ProjectName)/common/ -c "['../../../WOS-Client/Source/WOS/Network/']" -n account
+python execute.py -s ../../$(ProjectName)/Common/ -c "['../../../WOS-Client/Source/WOS/Network/']" -n account
 
 
 

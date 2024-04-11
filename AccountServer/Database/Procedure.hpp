@@ -20,7 +20,7 @@ public:
 	bool CheckUser(String nickname);
 	std::optional<String> Login(String nickname, String pwdhash);
 	bool Register(String nickname, String pwdhash, String& uuid);
-	bool Logout(String uuid);
+	bool Logout(std::shared_ptr<Session> session, String uuid);
 	void SendLog(String uid, std::shared_ptr<class AccountSession> session, gen::logs::ELoginType type);
 	HashMap<String, bool> m_loginUserCheck;
 };
