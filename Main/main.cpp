@@ -20,7 +20,7 @@ int main()
 
 		Console::Log(Category::AccountServer, Info, L"Account Server is running on " + action::ToUnicodeString(serverEndpoint.toString()));
 
-		GEngine->ExecuteIocpLogic(thread::hardware_concurrency(), true);
+		GEngine->ExecuteThread(2, 2, true);
 	}
 	catch (exception& e) {
 		Console::Log(Category::AccountServer, Error, action::ToUnicodeString(e.what()));
