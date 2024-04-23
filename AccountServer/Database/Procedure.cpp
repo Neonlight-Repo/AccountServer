@@ -11,16 +11,16 @@
 
 std::shared_ptr<Procedure> GProcedure = std::make_shared<Procedure>();
 
-void Procedure::HandleLogin(std::shared_ptr<Session> session, gen::account::LoginReq request)
+void Procedure::HandleLogin(std::shared_ptr<Session> session, std::shared_ptr<gen::account::LoginReq> request)
 {
 	auto accountSession = std::static_pointer_cast<AccountSession>(session);
 	gen::account::LoginRes res;
 	res.success = false;
 	res.uuid = TEXT("");
 	res.cause = gen::account::ELoginFail::INVALID;
-	if (CheckUser(request.nickname) && !m_loginUserCheck[request.nickname])
+	if (CheckUser(request->nickname) && !m_loginUserCheck[request->nickname])
 	{
-		auto uuid = Login(request.nickname, request.password);
+		auto uuid = Login(request->nickname, request->password);
 		if (uuid.has_value())
 		{
 			if (!m_loginUserCheck[uuid.value()])
@@ -44,20 +44,20 @@ void Procedure::HandleLogin(std::shared_ptr<Session> session, gen::account::Logi
 	session->Send(&res);
 }
 
-void Procedure::HandleLogout(std::shared_ptr<Session> session, gen::account::LogoutReq request)
+void Procedure::HandleLogout(std::shared_ptr<Session> session, std::shared_ptr<gen::account::LogoutReq> request)
 {
 	auto accountSession = std::static_pointer_cast<AccountSession>(session);
-	Logout(session, request.uuid);
+	Logout(session, request->uuid);
 }
 
-void Procedure::HandleRegister(std::shared_ptr<Session> session, gen::account::RegisterReq request)
+void Procedure::HandleRegister(std::shared_ptr<Session> session, std::shared_ptr<gen::account::RegisterReq> request)
 {
 	gen::account::RegisterRes res;
 	res.success = false;
-	if (!CheckUser(request.nickname))
+	if (!CheckUser(request->nickname))
 	{
 		String uuid;
-		res.success = Register(request.nickname, request.password, uuid);
+		res.success = Register(request->nickname, request->password, uuid);
 		if (res.success)
 			SendLog(uuid, std::static_pointer_cast<AccountSession>(session), gen::logs::REGISTER);
 	}
@@ -131,7 +131,12 @@ bool Procedure::Logout(std::shared_ptr<Session> session, String uuid)
 	auto accountSession = std::static_pointer_cast<AccountSession>(session);
 	if (m_loginUserCheck[uuid]) {
 		Console::Log(Category::AccountServer, Debug, TEXT("user logout"));
+
 		m_loginUserCheck[uuid] = false;
+
+		gen::account::LogoutRes res;
+		if (session)
+			session->Send(&res);
 
 		SendLog(accountSession->uuid.value(), accountSession, gen::logs::LOGOUT);
 		return true;

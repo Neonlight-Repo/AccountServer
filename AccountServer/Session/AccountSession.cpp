@@ -2,9 +2,11 @@
 #include "AccountSession.hpp"
 #include "generated/account/ServerPacketHandler.gen.hpp"
 #include "Database/Procedure.hpp"
+#include "LogSession.hpp"
 
 AccountSession::AccountSession() : uuid(std::nullopt)
 {
+
 }
 
 AccountSession::~AccountSession()
@@ -13,7 +15,7 @@ AccountSession::~AccountSession()
 
 void AccountSession::OnConnected(net::Endpoint endpoint)
 {
-	Procedure::Get()->Launch([this, endpoint] {	
+	Procedure::Get()->Launch([this, endpoint] {
 		m_endpoint = endpoint;
 		Console::Log(Category::AccountServer, Info, TEXT("Connected " + action::ToUnicodeString(endpoint.toString())));
 	});

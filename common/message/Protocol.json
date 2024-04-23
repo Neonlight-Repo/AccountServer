@@ -59,6 +59,10 @@
 				]
 			},
 			{
+				"name": "LogoutRes",
+				"data": []
+			},
+			{
 				"name": "RegisterRes",
 				"data": [
 					{

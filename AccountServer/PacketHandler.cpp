@@ -4,20 +4,20 @@
 
 using namespace gen;
 
-bool account::PacketHandler::LoginReqPacketHandler(std::shared_ptr<Session> session, TSharedPtr<LoginReq> packet)
+bool account::PacketHandler::LoginReqPacketHandler(TSharedPtr<Session> session, TSharedPtr<LoginReq> packet)
 {
-	Procedure::Get()->Launch(&Procedure::HandleLogin, session, *packet);
+	Procedure::Get()->Launch(&Procedure::HandleLogin, session, packet);
 	return false;
 }
 
 bool account::PacketHandler::LogoutReqPacketHandler(TSharedPtr<Session> session, TSharedPtr<LogoutReq> packet)
 {
-	Procedure::Get()->Launch(&Procedure::HandleLogout, session, *packet);
+	Procedure::Get()->Launch(&Procedure::HandleLogout, session, packet);
 	return false;
 }
 
 bool account::PacketHandler::RegisterReqPacketHandler(TSharedPtr<Session> session, TSharedPtr<RegisterReq> packet)
 {
-	Procedure::Get()->Launch(&Procedure::HandleRegister, session, *packet);
+	Procedure::Get()->Launch(&Procedure::HandleRegister, session, packet);
 	return false;
 }

@@ -1,5 +1,7 @@
 #include "pch.h"
-#include "LogSession.hpp"
+#include "Network/Server.hpp"
+#include "Session/AccountSession.hpp"
+#include "Session/LogSession.hpp"
 #include "Thread/ThreadManager.hpp"
 
 #include "generated/logs/Protocol.gen.hpp"
@@ -20,21 +22,25 @@ void LogSession::OnConnected(net::Endpoint endpoint)
 	sysLog.severity = gen::logs::INFO;
 	sysLog.serverName = TEXT("Account Server");
 	sysLog.message = TEXT("Server started");
-	Send(&sysLog);
+	LogSession::Get()->Send(&sysLog);
+
+	auto serverEndpoint = Endpoint(net::IpAddress::Loopback, 1207);
+	static auto server = Server::Open<AccountSession>();
+	server->Run(serverEndpoint);
+	Console::Log(Category::AccountServer, Info, L"Account Server is running on " + action::ToUnicodeString(serverEndpoint.toString()));
 }
 
 void LogSession::OnDisconnected(net::Endpoint)
 {
-	GEngine->GetThreadManager()->Terminate();
 }
 
 void LogSession::OnReceive(std::span<char>, int)
 {
 }
 
-void LogSession::OnFail(Failure)
+void LogSession::OnFail(Failure fail)
 {
-	ASSERT_CRASH(false);
+
 }
 
 net::Endpoint LogSession::GetEndpoint() const

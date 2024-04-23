@@ -10,17 +10,12 @@ using namespace std;
 
 int main()
 {
-	auto serverEndpoint = Endpoint(net::IpAddress::Loopback, 1207);
 	auto logServerEndpoint = Endpoint(net::IpAddress::Loopback, 1225);
 	try {
-		auto server = Server::Open<AccountSession>();
 		auto client = Client::Open<LogSession>();
-		server->Run(serverEndpoint);
 		client->Run(logServerEndpoint);
 
-		Console::Log(Category::AccountServer, Info, L"Account Server is running on " + action::ToUnicodeString(serverEndpoint.toString()));
-
-		GEngine->ExecuteThread(2, 2, true);
+		GEngine->ExecuteThread(2, 2);
 	}
 	catch (exception& e) {
 		Console::Log(Category::AccountServer, Error, action::ToUnicodeString(e.what()));
