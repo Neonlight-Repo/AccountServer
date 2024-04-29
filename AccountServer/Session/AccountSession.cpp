@@ -4,6 +4,7 @@
 #include "Database/Procedure.hpp"
 #include "LogSession.hpp"
 
+
 AccountSession::AccountSession() : uuid(std::nullopt)
 {
 
@@ -15,15 +16,12 @@ AccountSession::~AccountSession()
 
 void AccountSession::OnConnected(net::Endpoint endpoint)
 {
-	Procedure::Get()->Launch([this, endpoint] {
-		m_endpoint = endpoint;
-		Console::Log(Category::AccountServer, Info, TEXT("Connected " + action::ToUnicodeString(endpoint.toString())));
-	});
+	m_sock;
 }
 
 void AccountSession::OnDisconnected(net::Endpoint endpoint)
 {
-	Procedure::Get()->Launch([=, this] {
+	Procedure::Get()->Launch([=] {
 		Console::Log(Category::AccountServer, Info, TEXT("Disconnected " + action::ToUnicodeString(endpoint.toString())));
 		if (uuid.has_value())
 			Procedure::Get()->Logout(shared_from_this(), uuid.value());

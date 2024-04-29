@@ -10,12 +10,20 @@ using namespace std;
 
 int main()
 {
-	auto logServerEndpoint = Endpoint(net::IpAddress::Loopback, 1225);
+	auto logEndpoint = Endpoint(IpAddress::Loopback, 1225);
+	auto endpoint = Endpoint(net::IpAddress::Loopback, 1207);
 	try {
 		auto client = Client::Open<LogSession>();
-		client->Run(logServerEndpoint);
+		auto server = Server::Open<AccountSession>();
+		client->Run(logEndpoint);
+		server->Run(endpoint);
 
 		GEngine->ExecuteThread(2, 2);
+
+		while (true)
+		{
+			std::this_thread::sleep_for(std::chrono::seconds(1));
+		}
 	}
 	catch (exception& e) {
 		Console::Log(Category::AccountServer, Error, action::ToUnicodeString(e.what()));

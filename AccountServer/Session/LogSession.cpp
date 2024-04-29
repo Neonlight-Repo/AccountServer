@@ -15,19 +15,12 @@ std::shared_ptr<LogSession> LogSession::Get()
 
 void LogSession::OnConnected(net::Endpoint endpoint)
 {
-	m_endpoint = endpoint;
 	s_instance = std::static_pointer_cast<LogSession>(shared_from_this());
-
 	gen::logs::SystemLog sysLog;
-	sysLog.severity = gen::logs::INFO;
+	sysLog.severity = gen::logs::ESeverity::INFO;
 	sysLog.serverName = TEXT("Account Server");
 	sysLog.message = TEXT("Server started");
-	LogSession::Get()->Send(&sysLog);
-
-	auto serverEndpoint = Endpoint(net::IpAddress::Loopback, 1207);
-	static auto server = Server::Open<AccountSession>();
-	server->Run(serverEndpoint);
-	Console::Log(Category::AccountServer, Info, L"Account Server is running on " + action::ToUnicodeString(serverEndpoint.toString()));
+	Send(&sysLog);
 }
 
 void LogSession::OnDisconnected(net::Endpoint)

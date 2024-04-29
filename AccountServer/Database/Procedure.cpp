@@ -9,7 +9,7 @@
 
 #include "generated/logs/Enum.gen.hpp"
 
-std::shared_ptr<Procedure> GProcedure = std::make_shared<Procedure>();
+//std::shared_ptr<Procedure> GProcedure = std::make_shared<Procedure>();
 
 void Procedure::HandleLogin(std::shared_ptr<Session> session, std::shared_ptr<gen::account::LoginReq> request)
 {
