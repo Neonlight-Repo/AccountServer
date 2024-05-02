@@ -21,10 +21,11 @@ void AccountSession::OnConnected(net::Endpoint endpoint)
 
 void AccountSession::OnDisconnected(net::Endpoint endpoint)
 {
-	Procedure::Get()->Launch([=] {
+	auto uid = uuid;
+	Procedure::Get()->Launch([uid, endpoint, this] {
 		Console::Log(Category::AccountServer, Info, TEXT("Disconnected " + action::ToUnicodeString(endpoint.toString())));
-		if (uuid.has_value())
-			Procedure::Get()->Logout(shared_from_this(), uuid.value());
+		if (uid.has_value())
+			Procedure::Get()->Logout(shared_from_this(), uid.value());
 	});
 }
 

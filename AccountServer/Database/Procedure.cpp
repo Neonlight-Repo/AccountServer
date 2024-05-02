@@ -21,6 +21,7 @@ void Procedure::HandleLogin(std::shared_ptr<Session> session, std::shared_ptr<ge
 	if (CheckUser(request->nickname) && !m_loginUserCheck[request->nickname])
 	{
 		auto uuid = Login(request->nickname, request->password);
+		accountSession->uuid = uuid;
 		if (uuid.has_value())
 		{
 			if (!m_loginUserCheck[uuid.value()])
@@ -30,7 +31,6 @@ void Procedure::HandleLogin(std::shared_ptr<Session> session, std::shared_ptr<ge
 				res.cause = gen::account::ELoginFail::SUCCESS;
 
 				Console::Log(Category::AccountServer, Debug, TEXT("User logined."));
-				accountSession->uuid = uuid.value();
 
 				m_loginUserCheck[uuid.value()] = true;
 				SendLog(uuid.value(), accountSession, gen::logs::LOGIN);
@@ -138,7 +138,7 @@ bool Procedure::Logout(std::shared_ptr<Session> session, String uuid)
 		if (session)
 			session->Send(&res);
 
-		SendLog(accountSession->uuid.value(), accountSession, gen::logs::LOGOUT);
+		SendLog(uuid, accountSession, gen::logs::LOGOUT);
 		return true;
 	}
 	return false;
