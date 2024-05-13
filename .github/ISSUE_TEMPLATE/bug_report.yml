@@ -1,0 +1,19 @@
+name: Bug Report
+description: AccountServer issue template
+labels: [bug]
+body:
+  - type: input
+    attributes:
+      label: Description
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Callstack
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Steps To Reproduce
+    validations:
+      required: true
