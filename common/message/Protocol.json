@@ -38,6 +38,15 @@
 						"name": "password"
 					}
 				]
+			},
+			{
+				"name": "CheckNicknameReq",
+				"data": [
+					{
+						"type": "string",
+						"name": "nickname"
+					}
+				]
 			}
 		],
 		"server": [
@@ -59,15 +68,20 @@
 				]
 			},
 			{
-				"name": "LogoutRes",
-				"data": []
-			},
-			{
 				"name": "RegisterRes",
 				"data": [
 					{
 						"type": "bool",
 						"name": "success"
+					}
+				]
+			},
+			{
+				"name": "CheckNicknameRes",
+				"data": [
+					{
+						"type": "bool",
+						"name": "exists"
 					}
 				]
 			}

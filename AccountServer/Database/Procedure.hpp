@@ -16,6 +16,7 @@ public:
 	void HandleLogin(std::shared_ptr<Session> session, std::shared_ptr<gen::account::LoginReq> request);
 	void HandleLogout(std::shared_ptr<Session> session, std::shared_ptr<gen::account::LogoutReq> request);
 	void HandleRegister(std::shared_ptr<Session> session, std::shared_ptr<gen::account::RegisterReq> request);
+	void HandleCheck(std::shared_ptr<Session> session, std::shared_ptr<gen::account::CheckNicknameReq> request);
 public:
 	bool CheckUser(String nickname);
 	std::optional<String> Login(String nickname, String pwdhash);

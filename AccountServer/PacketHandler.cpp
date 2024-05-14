@@ -21,3 +21,10 @@ bool account::PacketHandler::RegisterReqPacketHandler(TSharedPtr<Session> sessio
 	Procedure::Get()->Launch(&Procedure::HandleRegister, session, packet);
 	return false;
 }
+
+bool account::PacketHandler::CheckNicknameReqPacketHandler(TSharedPtr<Session> session, TSharedPtr<CheckNicknameReq> packet)
+{
+	Procedure::Get()->Launch(&Procedure::HandleCheck, session, packet);
+	return false;
+}
+

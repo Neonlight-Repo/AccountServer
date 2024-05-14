@@ -64,6 +64,13 @@ void Procedure::HandleRegister(std::shared_ptr<Session> session, std::shared_ptr
 	session->Send(&res);
 }
 
+void Procedure::HandleCheck(std::shared_ptr<Session> session, std::shared_ptr<gen::account::CheckNicknameReq> request)
+{
+	gen::account::CheckNicknameRes res;
+	res.exists = CheckUser(request->nickname);
+	session->Send(&res);
+}
+
 bool Procedure::CheckUser(String nickname)
 {
 	auto conn = GEngine->GetDBConnectionPool()->Pop();
@@ -133,10 +140,6 @@ bool Procedure::Logout(std::shared_ptr<Session> session, String uuid)
 		Console::Log(Category::AccountServer, Debug, TEXT("user logout"));
 
 		m_loginUserCheck[uuid] = false;
-
-		gen::account::LogoutRes res;
-		if (session)
-			session->Send(&res);
 
 		SendLog(uuid, accountSession, gen::logs::LOGOUT);
 		return true;
