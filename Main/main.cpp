@@ -23,7 +23,7 @@ int main()
 		while (true)
 		{
 			std::this_thread::sleep_for(std::chrono::seconds(1));
-		}
+		}	
 	}
 	catch (exception& e) {
 		Console::Log(Category::AccountServer, Error, action::ToUnicodeString(e.what()));

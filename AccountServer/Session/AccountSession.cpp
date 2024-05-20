@@ -34,7 +34,7 @@ void AccountSession::OnReceive(std::span<char> buffer, int)
 {
 	uint16 id = 0;
 	memcpy(&id, buffer.data(), sizeof(uint16));
-	gen::account::PacketHandler::handlePacket(shared_from_this(), id, buffer);
+	gen::account::PacketHandler::HandlePacket(shared_from_this(), id, buffer);
 }
 
 void AccountSession::OnFail(Failure)
