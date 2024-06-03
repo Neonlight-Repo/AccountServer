@@ -41,7 +41,7 @@ void Procedure::HandleLogin(std::shared_ptr<Session> session, std::shared_ptr<ge
 			}
 		}
 	}
-	session->Send(&res);
+	session->Send(&res, true);
 }
 
 void Procedure::HandleLogout(std::shared_ptr<Session> session, std::shared_ptr<gen::account::LogoutReq> request)
@@ -61,14 +61,14 @@ void Procedure::HandleRegister(std::shared_ptr<Session> session, std::shared_ptr
 		if (res.success)
 			SendLog(uuid, std::static_pointer_cast<AccountSession>(session), gen::logs::REGISTER);
 	}
-	session->Send(&res);
+	session->Send(&res, true);
 }
 
 void Procedure::HandleCheck(std::shared_ptr<Session> session, std::shared_ptr<gen::account::CheckNicknameReq> request)
 {
 	gen::account::CheckNicknameRes res;
 	res.exists = CheckUser(request->nickname);
-	session->Send(&res);
+	session->Send(&res, true);
 }
 
 bool Procedure::CheckUser(String nickname)
@@ -156,5 +156,5 @@ void Procedure::SendLog(String uid, std::shared_ptr<AccountSession> session, gen
 	secuLog.uid = uid;
 	secuLog.ipAddress = action::ToUnicodeString(accountSession->GetEndpoint().getAddress().toString());
 	secuLog.loginType = type;
-	logSession->Send(&secuLog);
+	logSession->Send(&secuLog, true);
 }
