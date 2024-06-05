@@ -32,8 +32,7 @@ void AccountSession::OnDisconnected(net::Endpoint endpoint)
 
 void AccountSession::OnReceive(std::span<char> buffer, int)
 {
-	uint16 id = 0;
-	memcpy(&id, buffer.data(), sizeof(uint16));
+	uint16 id = *reinterpret_cast<uint16*>(buffer.data());
 	gen::account::PacketHandler::HandlePacket(shared_from_this(), id, buffer);
 }
 
