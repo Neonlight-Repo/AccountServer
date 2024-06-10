@@ -23,6 +23,6 @@ int main()
 		getchar();
 	}
 	catch (exception& e) {
-		Console::Log(Category::AccountServer, Error, action::ToUnicodeString(e.what()));
+		Console::Log(Category::AccountServer, Error, ToUnicodeString(e.what()));
 	}
 }

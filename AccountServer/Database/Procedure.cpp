@@ -119,7 +119,7 @@ bool Procedure::Register(String nickname, String pwdhash, String& uuid)
 	auto conn = GEngine->GetDBConnectionPool()->Pop();
 	if (conn)
 	{
-		uuid = action::UUIDv4();
+		uuid = UUIDv4();
 		auto stmt = conn->CreateStatement<2, 0>(std::format(TEXT("CALL SP_Register('{}', ?, ?)"), uuid));
 		stmt.SetParameter(0, nickname.c_str());
 		stmt.SetParameter(1, pwdhash.c_str());
@@ -154,7 +154,7 @@ void Procedure::SendLog(String uid, std::shared_ptr<AccountSession> session, gen
 
 	gen::logs::SecurityLog secuLog;
 	secuLog.uid = uid;
-	secuLog.ipAddress = action::ToUnicodeString(accountSession->GetEndpoint().getAddress().toString());
+	secuLog.ipAddress = ToUnicodeString(accountSession->GetEndpoint().getAddress().toString());
 	secuLog.loginType = type;
 	logSession->Send(&secuLog, true);
 }

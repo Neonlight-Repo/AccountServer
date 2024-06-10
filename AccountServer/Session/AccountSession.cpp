@@ -24,7 +24,7 @@ void AccountSession::OnDisconnected(net::Endpoint endpoint)
 	auto uid = uuid;
 	auto sharedThis = shared_from_this();
 	Procedure::Get()->Launch([uid, sharedThis, endpoint] {
-		Console::Log(Category::AccountServer, Info, TEXT("Disconnected " + action::ToUnicodeString(endpoint.toString())));
+		Console::Log(Category::AccountServer, Info, TEXT("Disconnected " + ToUnicodeString(endpoint.toString())));
 		if (uid.has_value())
 			Procedure::Get()->Logout(sharedThis, uid.value());
 	});
