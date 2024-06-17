@@ -30,7 +30,7 @@ void Procedure::HandleLogin(std::shared_ptr<Session> session, std::shared_ptr<ge
 				res.success = true;
 				res.cause = gen::account::ELoginFail::SUCCESS;
 
-				Console::Log(Category::AccountServer, Debug, TEXT("User logined."));
+				Console::Debug(Category::AccountServer, TEXT("User logined."));
 
 				m_loginUserCheck[uuid.value()] = true;
 				SendLog(uuid.value(), accountSession, gen::logs::LOGIN);
@@ -137,7 +137,7 @@ bool Procedure::Logout(std::shared_ptr<Session> session, String uuid)
 {
 	auto accountSession = std::static_pointer_cast<AccountSession>(session);
 	if (m_loginUserCheck[uuid]) {
-		Console::Log(Category::AccountServer, Debug, TEXT("user logout"));
+		Console::Debug(Category::AccountServer, TEXT("user logout"));
 
 		m_loginUserCheck[uuid] = false;
 
