@@ -16,7 +16,7 @@ AccountSession::~AccountSession()
 
 void AccountSession::OnConnected(net::Endpoint endpoint)
 {
-	m_sock;
+	Console::Log(Category::AccountServer, TEXT("Disconnected " + ToUnicodeString(endpoint.toString())));
 }
 
 void AccountSession::OnDisconnected(net::Endpoint endpoint)

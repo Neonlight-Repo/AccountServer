@@ -18,6 +18,8 @@ int main()
 		client->Run(logEndpoint);
 		server->Run(endpoint);
 
+		Console::Log(Category::AccountServer, TEXT("Account Server is running on ") + ToUnicodeString(endpoint.toString()));
+
 		GEngine->ExecuteThread(2, 2);
 
 		getchar();
