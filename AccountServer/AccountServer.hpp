@@ -5,6 +5,8 @@ struct AccountServer final
 {
 	AccountServer();
 	~AccountServer();
+
+	void Run();
 };
 
-static AccountServer AccountServerInstance;
+static AccountServer* AccountServerInstance;
