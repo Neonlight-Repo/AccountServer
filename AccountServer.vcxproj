@@ -142,21 +142,22 @@ python execute.py -s ../../$(ProjectName)/Common/ -c "['../../../WOS-Client/Sour
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);__SERVER__;__SERVER__</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)SvEngine\include;$(SolutionDir)lib\netcpp\include;$(ProjectDir)Main\PCH;$(ProjectDir)$(ProjectName);$(ProjectDir);$(ProjectDir)common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Core\include;$(SolutionDir)Libraries\netcpp\include;$(ProjectDir)Main\PCH;$(ProjectDir)$(ProjectName);$(ProjectDir);$(ProjectDir)common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <DisableSpecificWarnings>4251</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)bin\$(Configuration);$(SolutionDir)lib\bin\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Binaries\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SvEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>cd ../tools/PacketGenerator
-python execute.py -s ../../$(ProjectName)/Common/ -c "['../../../WOS-Client/Source/WOS/Network/', '../../TestClient/Common/']" -n account</Command>
+      <Command>cd ../../Tools/PacketGenerator
+python execute.py -s ../../Server/$(ProjectName)/Common/ -c "['../../../WOS-Client/Source/WOS/Network/']" -n account</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -167,23 +168,24 @@ python execute.py -s ../../$(ProjectName)/Common/ -c "['../../../WOS-Client/Sour
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);__SERVER__;__SERVER__</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)SvEngine\include;$(SolutionDir)lib\netcpp\include;$(ProjectDir)Main\PCH;$(ProjectDir)$(ProjectName);$(ProjectDir);$(ProjectDir)common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Core\include;$(SolutionDir)Libraries\netcpp\include;$(ProjectDir)Main\PCH;$(ProjectDir)$(ProjectName);$(ProjectDir);$(ProjectDir)common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <DisableSpecificWarnings>4251</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)bin\$(Configuration);$(SolutionDir)lib\bin\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Binaries\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SvEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>cd ../tools/PacketGenerator
-python execute.py -s ../../$(ProjectName)/Common/ -c "['../../../WOS-Client/Source/WOS/Network/', '../../TestClient/Common/']" -n account</Command>
+      <Command>cd ../../Tools/PacketGenerator
+python execute.py -s ../../Server/$(ProjectName)/Common/ -c "['../../../WOS-Client/Source/WOS/Network/']" -n account</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
