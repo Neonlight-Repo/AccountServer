@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "AccountSession.hpp"
 #include "generated/account/ServerPacketHandler.gen.hpp"
-#include "Database/Procedure.hpp"
+#include "LoginProc.hpp"
 #include "LogSession.hpp"
 
 
@@ -16,24 +16,19 @@ AccountSession::~AccountSession()
 
 void AccountSession::OnConnected(net::Endpoint endpoint)
 {
-	Console::Log(Category::AccountServer, TEXT("Disconnected " + ToUnicodeString(endpoint.toString())));
+	Console::Log(Category::AccountServer, TEXT("Connected " + ToUnicodeString(endpoint.toString())));
 }
 
 void AccountSession::OnDisconnected(net::Endpoint endpoint)
 {
-	auto uid = uuid;
-	auto sharedThis = shared_from_this();
-	Procedure::Get()->Launch([uid, sharedThis, endpoint] {
-		Console::Log(Category::AccountServer, TEXT("Disconnected " + ToUnicodeString(endpoint.toString())));
-		if (uid.has_value())
-			Procedure::Get()->Logout(sharedThis, uid.value());
-	});
+	Console::Log(Category::AccountServer, TEXT("Disconnected " + ToUnicodeString(endpoint.toString())));
+	if (uuid.has_value())
+		LoginProc::Get()->Logout(this, uuid.value());
 }
 
 void AccountSession::OnReceive(std::span<char> buffer, int)
 {
-	uint16 id = *reinterpret_cast<uint16*>(buffer.data());
-	gen::account::PacketHandler::HandlePacket(shared_from_this(), id, buffer);
+	gen::account::PacketHandler::HandlePacket(this, buffer);
 }
 
 void AccountSession::OnFail(Failure)

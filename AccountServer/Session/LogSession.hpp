@@ -5,7 +5,7 @@
 class LogSession : public Session
 {
 public:
-    static std::shared_ptr<LogSession> Get();
+    static LogSession* Get();
 public:
     virtual void OnConnected(net::Endpoint);
     virtual void OnDisconnected(net::Endpoint);
@@ -14,6 +14,6 @@ public:
 public:
     net::Endpoint GetEndpoint() const;
 private:
-    static std::shared_ptr<LogSession> s_instance;
+    static LogSession* s_instance;
     net::Endpoint m_endpoint;
 };

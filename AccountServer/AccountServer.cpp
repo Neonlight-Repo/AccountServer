@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "AccountServer.hpp"
-#include "Database/DBConnectionPool.hpp"
 #include "Session/AccountSession.hpp"
 #include "Session/LogSession.hpp"
 
@@ -8,31 +7,28 @@
 #include "Network/Client.hpp"
 
 Engine* GEngine;
+Database* GDatabase;
 
 AccountServer::AccountServer()
 {
 	GEngine = new Engine;
+	GDatabase = new Database;
 }
 
 
 AccountServer::~AccountServer()
 {
 	delete GEngine;
+	delete GDatabase;
 }
 
 void AccountServer::Run()
 {
 	GEngine->Initialize();
+	GDatabase->Initialize();
 
-	GEngine->GetDBConnectionPool()->Connect(10, TEXT(
-		"DRIVER={MySQL ODBC 8.3 Unicode Driver};"
-		"SERVER=localhost;"
-		"PORT=3306;"
-		"DATABASE=AccountDB;"
-		"USER=AccountAdmin;"
-		"PASSWORD=qwE!r6800@;"
-		"OPTION=3;"
-	));
+	GDatabase->SetDatabaseProfile(TEXT("AccountAdmin"), TEXT("qwE!r6800@"), TEXT("AccountDB"));
+	GDatabase->CreateConnection();
 
 	auto logEndpoint = Endpoint(IpAddress::Loopback, 1225);
 	auto endpoint = Endpoint(net::IpAddress::Loopback, 1207);
@@ -44,7 +40,7 @@ void AccountServer::Run()
 
 		Console::Log(Category::AccountServer, TEXT("Account Server is running on ") + ToUnicodeString(endpoint.toString()));
 
-		GEngine->ExecuteThread(2, 2);
+		GEngine->Run(1);
 	}
 	catch (std::exception& e) {
 		Console::Error(Category::AccountServer, ToUnicodeString(e.what()));

@@ -2,20 +2,19 @@
 #include "Network/Server.hpp"
 #include "Session/AccountSession.hpp"
 #include "Session/LogSession.hpp"
-#include "Thread/ThreadManager.hpp"
 
 #include "generated/logs/Protocol.gen.hpp"
 
-std::shared_ptr<LogSession> LogSession::s_instance = nullptr;
+LogSession* LogSession::s_instance = nullptr;
 
-std::shared_ptr<LogSession> LogSession::Get()
+LogSession* LogSession::Get()
 {
 	return s_instance;
 }
 
 void LogSession::OnConnected(net::Endpoint endpoint)
 {
-	s_instance = std::static_pointer_cast<LogSession>(shared_from_this());
+	s_instance = this;
 	gen::logs::SystemLog sysLog;
 	sysLog.severity = gen::logs::ESeverity::INFO;
 	sysLog.serverName = TEXT("Account Server");
@@ -25,6 +24,7 @@ void LogSession::OnConnected(net::Endpoint endpoint)
 
 void LogSession::OnDisconnected(net::Endpoint)
 {
+	s_instance = nullptr;
 }
 
 void LogSession::OnReceive(std::span<char>, int)
