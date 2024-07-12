@@ -71,7 +71,7 @@ bool LoginProc::CheckUser(String nickname)
 	auto pstmt = GDatabase->CallProcedure("SP_CheckUser", ToAnsiString(nickname));
 	auto res = std::unique_ptr<sql::ResultSet>(pstmt->executeQuery());
 	if (res && res->next())
-		return res->getUInt(0);
+		return res->getUInt(1);
 	else
 		return false;
 }
@@ -81,7 +81,7 @@ std::optional<String> LoginProc::Login(String nickname, String pwdhash)
 	auto pstmt = GDatabase->CallProcedure("SP_Login", ToAnsiString(nickname), ToAnsiString(pwdhash));
 	auto res = std::unique_ptr<sql::ResultSet>(pstmt->executeQuery());
 	if (res && res->next()) {
-		return ToUnicodeString(res->getString(0).c_str());
+		return ToUnicodeString(res->getString(1).c_str());
 	}
 	else
 		return std::nullopt;
